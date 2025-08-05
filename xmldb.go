@@ -11,13 +11,16 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-var dbcfgPaths = []string{
-	`N:\PLATFORM\Common\Config\Cfg\zh-CN\GlobalCfg\PlatformCfg\CommData\DBCfg.xml`,
-	`C:\Users\Public\CAXA\CAXA EAP CLIENT\1.0\Cfg\zh-CN\GlobalCfg\PlatformCfg\CommData\DBCfg.xml`,
+var CommonCfgPaths = `\Cfg\zh-CN\GlobalCfg\PlatformCfg\CommData\DBCfg.xml`
+
+// 2024 版本及以前的 xml 数据库配置文件
+var DatabaseXmlCfgPaths = []string{
+	`N:\PLATFORM\Common\Config` + CommonCfgPaths,                 // Dev
+	`C:\Users\Public\CAXA\CAXA EAP CLIENT\1.0\` + CommonCfgPaths, // Release
 }
 
-func XmlToViper() (*viper.Viper, error) {
-	dbjson, err := DBXMLToJSON(dbcfgPaths)
+func DatabaseXmlToViper() (*viper.Viper, error) {
+	dbjson, err := XmlFileToJson(DatabaseXmlCfgPaths...)
 	if err != nil {
 		Xlog.Error(err.Error())
 		return nil, err
@@ -66,17 +69,17 @@ func XmlToViper() (*viper.Viper, error) {
 	return v, nil
 }
 
-func DBXMLToJSON(paths []string) (string, error) {
+func XmlFileToJson(paths ...string) (string, error) {
 	var xml *os.File
 	var err error
-	for _, path := range paths { // 遍历 dbcfgPaths ,读出到第一个成功的路径
+	for _, path := range paths {
 		xml, err = os.Open(path)
 		if err != nil {
 			if pathErr, ok := err.(*os.PathError); ok {
 				Xlog.Info("File does not exist: %s\n" + pathErr.Path)
 				continue
 			} else {
-				Xlog.Error("An error occurred:" + err.Error())
+				Xlog.Error("Open an error occurred:" + err.Error())
 				return "", err
 			}
 		}
@@ -85,14 +88,13 @@ func DBXMLToJSON(paths []string) (string, error) {
 		}
 	}
 
-	//xml := strings.NewReader(`<?xml version="1.0" encoding="UTF-8"?><hello>world</hello>`)
+	// xml := strings.NewReader(`<?xml version="1.0" encoding="UTF-8"?><hello>world</hello>`)
 	json, err := xj.Convert(xml)
 	if err != nil {
-		Xlog.Error("That's embarrassing...")
+		Xlog.Error("Error converting XML to JSON: " + err.Error())
 		return "", err
 	}
 
-	Xlog.Info(json.String())
-
+	Xlog.Info("XML2JSON:" + json.String())
 	return json.String(), nil
 }

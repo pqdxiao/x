@@ -10,8 +10,25 @@ import (
 	"gorm.io/gorm/schema"
 )
 
+// 根据平台XML数据库连接:x.Conndb()
 // Global database use gorm
 var Gdb *gorm.DB
+
+var err error
+
+func Conndb() {
+	var dbv *viper.Viper
+	if dbv, err = DatabaseXmlToViper(); err != nil {
+		Xlog.Error(err.Error())
+		return
+	}
+	if Gdb, err = ConnGormMssql(dbv); err != nil {
+		Xlog.Error(err.Error())
+		return
+	}
+
+	fmt.Println("db connect success")
+}
 
 // SetDefaultViperConfig sets the default configuration for viper
 func SetDefaultViperConfig(v *viper.Viper) {

@@ -18,7 +18,7 @@ var Xlog *zap.Logger
 // MaxBackups: number of log files
 // MaxAge:days
 const (
-	LogPath       = "./log" //"N:/PLATFORM/SERVER/Config/Log"
+	LogPath       = "./xlog" //"N:/PLATFORM/SERVER/Config/Log"
 	ErrorFileName = "x-err.log"
 	InfoFileName  = "x-info.log"
 	MaxSize       = 50
@@ -80,14 +80,14 @@ func InitXLogger() error {
 type Field = zap.Field
 
 // Int constructs a field with the given key and value.
-func Int(key string, val int) Field {
-	return zap.Int(key, val)
-}
+// func Int(key string, val int) Field {
+// 	return zap.Int(key, val)
+// }
 
-// String constructs a field with the given key and value.
-func String(key string, val string) Field {
-	return zap.String(key, val)
-}
+// // String constructs a field with the given key and value.
+// func String(key string, val string) Field {
+// 	return zap.String(key, val)
+// }
 
 // // Debug logs a message at DebugLevel
 // func Debug(msg string, fields ...Field) {
