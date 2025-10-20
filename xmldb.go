@@ -15,8 +15,8 @@ var CommonCfgPaths = `\Cfg\zh-CN\GlobalCfg\PlatformCfg\CommData\DBCfg.xml`
 
 // 2024 版本及以前的 xml 数据库配置文件
 var DatabaseXmlCfgPaths = []string{
-	`N:\PLATFORM\Common\Config` + CommonCfgPaths,                 // Dev
-	`C:\Users\Public\CAXA\CAXA EAP CLIENT\1.0\` + CommonCfgPaths, // Release
+	`N:\PLATFORM\Common\Config` + CommonCfgPaths,                // Dev
+	`C:\Users\Public\CAXA\CAXA EAP CLIENT\1.0` + CommonCfgPaths, // Release
 }
 
 func DatabaseXmlToViper() (*viper.Viper, error) {
