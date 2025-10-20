@@ -16,6 +16,7 @@ var searchCfgPath = []string{
 	"./config-srv-api/",
 	"./configd/",
 	"./cfg/",
+	"./web/",
 	"$HOME",
 	".",
 }
